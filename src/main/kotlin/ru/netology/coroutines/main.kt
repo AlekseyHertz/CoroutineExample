@@ -144,12 +144,12 @@ fun main() {
                 e.printStackTrace()
             }
             try {
-                val posts = getPosts(client).map { post ->
-                    async {
-                        PostWithAuthor(post, getAuthorsPost(client, post.id))
-                    }
-                }
-                    .awaitAll()
+                val posts = getPosts(client)
+                    .map { post ->
+                        async {
+                            PostWithAuthor(post, getAuthorsPost(client, post.id))
+                        }
+                    }.awaitAll()
                 println(posts)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -196,5 +196,5 @@ suspend fun getPosts(client: OkHttpClient): List<Post> =
 suspend fun getComments(client: OkHttpClient, id: Long): List<Comment> =
     makeRequest("$BASE_URL/api/slow/posts/$id/comments", client, object : TypeToken<List<Comment>>() {})
 
-suspend fun getAuthorsPost(client: OkHttpClient, id: Long): List <Author> =
-    makeRequest("$BASE_URL/api/slow/authors/$id", client, object : TypeToken<List<Author>>() {})
+suspend fun getAuthorsPost(client: OkHttpClient, id: Long): Author =
+    makeRequest("$BASE_URL/api/slow/authors/$id", client, object : TypeToken<Author>() {})
