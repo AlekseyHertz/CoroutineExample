@@ -147,7 +147,7 @@ fun main() {
                 val posts = getPosts(client)
                     .map { post ->
                         async {
-                            PostWithAuthor(post, getAuthorsPost(client, post.id))
+                            PostWithAuthor(post, getAuthorsPost(client, post.authorId))
                         }
                     }.awaitAll()
                 println(posts)
